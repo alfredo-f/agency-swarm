@@ -5,7 +5,8 @@ import readline
 import shutil
 import uuid
 from enum import Enum
-from typing import List, TypedDict, Callable, Any, Dict, Literal, Union
+from typing import List, TypedDict, Callable, Any, Dict, Literal, Union, \
+    Optional
 
 from pydantic import Field, field_validator
 from rich.console import Console
@@ -65,7 +66,7 @@ class Agency:
         self.agents = []
         self.agents_and_threads = {}
         self.main_recipients = []
-        self.main_thread = None
+        self.main_thread: Optional[Thread] = None
         self.recipient_agents = None
         self.shared_files = shared_files if shared_files else []
         self.settings_path = settings_path
