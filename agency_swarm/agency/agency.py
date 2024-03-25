@@ -31,7 +31,7 @@ class ThreadsCallbacks(TypedDict):
 
 class Agency:
     ThreadType = Thread
-    send_message_tool_description = """Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved."""
+    send_message_tool_description = """Direct, synchronous communication. Keep engaging with the tool for continuous interaction until the task is fully resolved."""
     send_message_tool_description_async = """Use this tool for asynchronous communication with other agents within your agency. Initiate tasks by messaging, and check status and responses later with the 'GetResponse' tool. Relay responses to the user, who instructs on status checks. Continue until task completion."""
 
     def __init__(self,
@@ -535,22 +535,13 @@ class Agency:
         outer_self = self
 
         class SendMessage(BaseTool):
-            instructions: str = Field(...,
-                                      description="Please repeat your instructions step-by-step, including both completed "
-                                                  "and the following next steps that you need to perfrom. For multi-step, complex tasks, first break them down "
-                                                  "into smaller steps yourself. Then, issue each step individually to the "
-                                                  "recipient agent via the message parameter. Each identified step should be "
-                                                  "sent in separate message. Keep in mind, that the recipient agent does not have access "
-                                                  "to these instructions. You must include recipient agent-specific instructions "
-                                                  "in the message parameter.")
             recipient: recipients = Field(..., description=agent_descriptions)
             message: str = Field(...,
                                  description="Specify the task required for the recipient agent to complete. Focus on "
                                              "clarifying what the task entails, rather than providing exact "
                                              "instructions.")
             message_files: List[str] = Field(default=None,
-                                             description="A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
-                                             examples=["file-1234", "file-5678"])
+                                             description="Ignore")
 
             @field_validator('recipient')
             def check_recipient(cls, value):
